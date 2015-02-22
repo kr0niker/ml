@@ -2,7 +2,7 @@ Practical Machine Learning
 ========================================================
 Summary
 =======================================
-we have managed to build a model predicting a quality of an excersise basing on the data of the sensors. The overall accuradcy is around 80%. We believe that we can improve it but commit this version due to the shortage of time.
+we have managed to build a model predicting a quality of an excersise basing on the data of the sensors. The overall accuradcy is around 80%. We believe that we can improve it but commit this version due to the shortage of time. On the test set (in the submission phase) the model got 19 out of 20 correctly, so, I decided not to tune it more.
 
 
 Task
