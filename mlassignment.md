@@ -1,5 +1,9 @@
 Practical Machine Learning
 ========================================================
+Summary
+=======================================
+we have managed to build a model predicting a quality of an excersise basing on the data of the sensors. The overall accuradcy is around 80%. We believe that we can improve it but commit this version due to the shortage of time.
+
 
 Task
 ==========================
@@ -140,7 +144,7 @@ confusionMatrix(prediction,as.factor(pertest$classe))
 ## Detection Prevalence    0.274    0.179    0.191    0.176    0.179
 ## Balanced Accuracy       0.903    0.829    0.855    0.885    0.927
 ```
-The model have overall accuracy of 80% and a good P-value. I am sure it can be improved, but now I do not have much time, unfortunately.
+The model has overall accuracy of 80% and a good P-value. I am sure it can be improved, but now I do not have much time, unfortunately.
 
 Appendix
 ===============================
