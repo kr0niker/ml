@@ -1,0 +1,53 @@
+Practical Machine Learning
+========================================================
+
+Task
+==========================
+To build the algorithm that could tell wether the exercise was performeed correctly or not using the information from body sensors.
+
+Loading the data:
+```{r}
+library(caret)
+library(ggplot2)
+train<-read.csv("pml-training.csv")
+test<-read.csv("pml-testing.csv") ## since these data do not have any information on the real class of the performer we can not use them as a testing set that we need to get from the train data.frame. 
+```
+Splitting it in the usual fashion:
+```{r}
+intrain<-createDataPartition(y=train$classe, p=0.75, list=FALSE)
+training<-train[intrain,]
+testing<-train[-intrain,]
+```
+We have made a number of pictures in order to visually represent the data. Some of the figures can be seen in Appendix. We manually pick several featueres that seem to have the most prominent influence on the outcome. An formed a data-sets specifically for them (we mirror this trimming for the test set too).
+```{r}
+pertrain<-data.frame(training$pitch_belt, training$min_yaw_belt, training$gyros_belt_y, training$gyros_belt_x, training$magnet_belt_z, training$accel_belt_y, training$total_accel_arm, training$pitch_forearm, training$accel_forearm_y, training$magnet_forearm_z, training$classe)
+colnames(pertrain) <- c('pitch_belt', 'min_yaw_belt', 'gyros_belt_y', 'gyros_belt_x', 'magnet_belt_z', 'accel_belt_y', 'total_accel_arm', 'pitch_forearm', 'accel_forearm_y', 'magnet_forearm_z', 'classe')
+
+pertest<-data.frame(testing$pitch_belt, testing$min_yaw_belt, testing$gyros_belt_y, testing$gyros_belt_x, testing$magnet_belt_z, testing$accel_belt_y, testing$total_accel_arm, testing$pitch_forearm, testing$accel_forearm_y, testing$magnet_forearm_z,testing$classe)
+pertest <- pertest[complete.cases(pertest),]
+colnames(pertest) <- c('pitch_belt', 'min_yaw_belt', 'gyros_belt_y', 'gyros_belt_x', 'magnet_belt_z', 'accel_belt_y', 'total_accel_arm', 'pitch_forearm', 'accel_forearm_y', 'magnet_forearm_z', 'classe')
+
+```
+We build a model using GBM method. It is rather time-consuming but it does a bootstrap with 25 repetitions.
+```{r}
+model1<-train(as.factor(classe)~.,data=pertrain,method = "gbm",
+              ## This last option is actually one
+              ## for gbm() that passes through
+              verbose = FALSE)
+model1
+
+prediction<-predict(model1,newdata=pertest)
+confusionMatrix(prediction,as.factor(pertest$classe))
+```
+The model have overall accuracy of 80% and a good P-value. I am sure it can be improved, but now I do not have much time, unfortunately.
+
+Appendix
+===============================
+Here you can see some plots that we have produced to pic features. We have plotted all the features (and thier influence on classe-variable), but here we give just sevetral examplese (since it is a standard procedure).
+
+```{r fig.width=7, fig.height=6}
+plot(features5)
+plot(features15)
+plot(features25)
+```
+
